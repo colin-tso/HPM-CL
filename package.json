@@ -1,0 +1,44 @@
+{
+  "name": "hpm-cl",
+  "displayName": "HPM/CL & AM/CL",
+  "description": "HPM/CL & AM/CL Syntax Highlighter and Checker",
+  "version": "1.0.0",
+  "publisher": "Colin Tso",
+  "author": "Colin Tso",
+  "private": true,
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "@vscode/vsce": "^2.19.0"
+  },
+  "keywords": [],
+  "dependencies": {},
+  "contributes": {
+    "languages": [
+      {
+        "id": "cl",
+        "aliases": [
+          "CL",
+          "AMCL",
+          "HPMCL"
+        ],
+        "extensions": [
+          ".cl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "cl",
+        "scopeName": "source.cl",
+        "path": "./syntaxes/cl.tmLanguage.json"
+      }
+    ]
+  },
+  "categories": [
+    "Programming Languages"
+  ]
+}
