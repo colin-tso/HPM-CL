@@ -108,7 +108,7 @@
       "name": "storage.modifier.cl"
     },
     {
-      "match": "(?i:\\s*\\b(ON|OFF|CAS|AUTO|MAN|ACTIVE|INACTIVE|PRESET|RUN)\\b)",
+      "match": "(?i:\\s*\\b(ON|OFF|CAS|AUTO|MAN|ACTIVE|INACTIVE|PRESET|RUN|HIGH|MEDIUM|LOW|NORMAL)\\b)",
       "name": "constant.language.cl"
     },
     {
@@ -166,7 +166,7 @@
       "match": "(?i:((?<=^END\\s)\\s*\\b[a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_]\\b))"
     },
     {
-      "match": "(?i:((?<=(\\+|=|-|\\\\|/|<|>|\\(|\\*|[^(,\\s*)])\\s*)(?<!\\.)(?<!^GOTO\\s*)(?<!\\s*GOTO\\s*)(?<!^END\\s)(?<!\\s*END\\s)\\b(?!(ON|OFF|CAS|AUTO|MAN|ACTIVE|INACTIVE|PRESET|RUN)\\b)([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_])\\b(?!(\\())|(?<!\\.)\\b([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_])\\b(?=\\s*(\\+|=|-|\\\\|/|<|>|\\(|\\)|\\*))))",
+      "match": "(?i:((?<=(\\+|=|-|\\\\|/|<|>|\\(|\\*|[^(,\\s*)])\\s*)(?<!\\.)(?<!^GOTO\\s*)(?<!\\s*GOTO\\s*)(?<!^END\\s)(?<!\\s*END\\s)\\b(?!(ON|OFF|CAS|AUTO|MAN|ACTIVE|INACTIVE|PRESET|RUN|HIGH|MEDIUM|LOW|NORMAL)\\b)([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_])\\b(?!(\\())|(?<!\\.)\\b([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_])\\b(?=\\s*(\\+|=|-|\\\\|/|<|>|\\(|\\)|\\*))))",
       "name": "variable.other.cl"
     },
     {
