@@ -93,3 +93,13 @@ IF (oilpnt.pvautost<>normal)or(gaspnt.pvautost<>normal)
 SET PVCALC = HG*CG*GASPNT.PV+ HO*CO*OILPNT.PV
 SET PVAUTOST=NORMAL
 END BtuswPV
+
+LOCAL stat : $MODSTR
+LOCAL target, source : STRING
+LOCAL tindex, sindex, chars
+SET target = "net>cust>recipenn.x"
+SET tindex = 16.0
+SET chars = 2.0
+SET source = "ab"
+SET sindex = 1.0
+CALL MODIFY_STRING (stat, target, tindex, chars, source, sindex)
