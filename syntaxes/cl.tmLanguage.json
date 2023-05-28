@@ -1,5 +1,7 @@
 {
-  "fileTypes": ["cl"],
+  "fileTypes": [
+    "cl"
+  ],
   "scopeName": "source.cl",
   "name": "HPMCL",
   "patterns": [
@@ -60,7 +62,7 @@
       "name": "keyword.control.cl"
     },
     {
-      "match": "\\b(?i)(abort|access|alarm|badval|not|and|generic|at|parameter|number|value|eu|or|int|access|engineer|exists|date_time|mins|hours|secs|general|class|abs|backgrnd|allow_bad|bld_visible|equal_null_point_id|others|max|min|pv_alg|point)\\b",
+      "match": "\\b(?i)(abort|access|alarm|badval|not|and|generic|at|parameter|number|value|eu|or|int|access|engineer|exists|date_time|mins|hours|secs|general|class|backgrnd|allow_bad|bld_visible|equal_null_point_id|others|pv_alg|point)\\b",
       "name": "keyword.control.cl"
     },
     {
@@ -79,10 +81,10 @@
           "name": "meta.separator.comma.cl"
         }
       },
-      "match": "(?i:(EXTERNAL|LOCAL)\\s*(?:(\\b[a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_]\\b)\\s*(,?)))"
+      "match": "(?i:(EXTERNAL|LOCAL)\\s*(\\b[a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*\\b)\\s*(,?))"
     },
     {
-      "match": "(?i:((?<=,)\\s*\\b([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_])\\b(?!(\\(|\\.))))",
+      "match": "(?i:((?<=,)\\s*\\b([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*)\\b(?!(\\(|\\.))))",
       "name": "variable.declaration.cl"
     },
     {
@@ -94,10 +96,16 @@
           "name": "variable.other.cl"
         },
         "3": {
+          "name": "punctuation.definition.class.cl"
+        },
+        "4": {
+          "name": "support.class.cl"
+        },
+        "5": {
           "name": "meta.separator.comma.cl"
         }
       },
-      "match": "(?i:(SET)\\s*(?:(\\b[a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_]\\b)\\s*(,?)))"
+      "match": "(?i:\\s*(SET)\\s*(\\b[a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*\\b)(?:(\\.)\\b([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*)\\b)?\\s*(,)?)"
     },
     {
       "match": "(?i:\\s*\\b(custom|end|package|block|param_list|subroutine|phase|step|sequence|define)\\b\\s*)",
@@ -108,7 +116,7 @@
       "name": "storage.modifier.cl"
     },
     {
-      "match": "(?i:\\s*\\b(ON|OFF|CAS|AUTO|MAN|ACTIVE|INACTIVE|PRESET|RUN|HIGH|MEDIUM|LOW|NORMAL)\\b)",
+      "match": "(?i:\\s*\\b(ON|OFF|CAS|AUTO|MAN|ACTIVE|INACTIVE|PRESET|RUN|HIGH|MEDIUM|LOW|NORMAL|OPERATOR|PROGRAM)\\b)",
       "name": "constant.language.cl"
     },
     {
@@ -154,7 +162,7 @@
           "name": "entity.name.function.begin.cl"
         }
       },
-      "match": "(?i:(\\b[a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_]\\b)\\s*(?=\\(\\)?))",
+      "match": "(?i:((?<!\\.)\\b[a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*\\b)\\s*(?=\\(\\)?))",
       "name": "support.function.cl"
     },
     {
@@ -163,11 +171,25 @@
           "name": "entity.name.function.end.cl"
         }
       },
-      "match": "(?i:((?<=^END\\s)\\s*\\b[a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_]\\b))"
+      "match": "(?i:((?<=^END\\s)\\s*\\b[a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*\\b))"
     },
     {
-      "match": "(?i:((?<=(\\+|=|-|\\\\|/|<|>|\\(|\\*|[^(,\\s*)])\\s*)(?<!\\.)(?<!^GOTO\\s*)(?<!\\s*GOTO\\s*)(?<!^END\\s)(?<!\\s*END\\s)\\b(?!(ON|OFF|CAS|AUTO|MAN|ACTIVE|INACTIVE|PRESET|RUN|HIGH|MEDIUM|LOW|NORMAL)\\b)([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_])\\b(?!(\\())|(?<!\\.)\\b([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_])\\b(?=\\s*(\\+|=|-|\\\\|/|<|>|\\(|\\)|\\*))))",
+      "match": "(?i:((?<=(\\+|=|-|\\\\|/|<|>|\\(|\\*|[^(,\\s*)])\\s*)(?<!\\.)(?<!^GOTO\\s*)(?<!\\s*GOTO\\s*)(?<!^END\\s)(?<!\\s*END\\s)\\b(?!(ON|OFF|CAS|AUTO|MAN|ACTIVE|INACTIVE|PRESET|RUN|HIGH|MEDIUM|LOW|NORMAL|OPERATOR|PROGRAM|SET)\\b)([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*)\\b(?!((\\(|\\.)))|(?<!\\.)\\b([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*)\\b(?=\\s*(\\+|=|-|\\\\|/|<|>|\\(|\\)|\\*))))",
       "name": "variable.other.cl"
+    },
+    {
+      "captures": {
+        "1": {
+          "name": "variable.other.cl"
+        },
+        "2": {
+          "name": "punctuation.definition.class.cl"
+        },
+        "3": {
+          "name": "support.class.cl"
+        }
+      },
+      "match": "\\b([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*)\\b(\\.)\\b([a-zA-Z0-9_]*[a-zA-Z_]*[a-zA-Z_][a-zA-Z0-9_]*)\\b"
     },
     {
       "match": "!|\\$|%|\\*|\\-\\-|\\-|\\+\\+|\\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|\\|\\||\\?\\:|\\*=|/=|%=|\\+=|\\-=|\\^=|\\b(in|instanceof|new|delete|typeof|void)\\b",
