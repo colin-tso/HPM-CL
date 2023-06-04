@@ -103,3 +103,5 @@ SET chars = 2.0
 SET source = "ab"
 SET sindex = 1.0
 CALL MODIFY_STRING (stat, target, tindex, chars, source, sindex)
+
+SET fdas = 55;
