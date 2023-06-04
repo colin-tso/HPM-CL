@@ -9,12 +9,47 @@
   "engines": {
     "vscode": "^1.74.0"
   },
-  "scripts": {},
+  "activationEvents": [
+    "onLanguage:cl"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "devDependencies": {
     "@vscode/vsce": "^2.19.0"
   },
   "keywords": [],
-  "dependencies": {},
+  "dependencies": {
+    "vscode-textmate-languageservice": "^1.2.1"
+  },
+  "textmate-languageservice-contributes": {
+    "languages": [
+      {
+        "id": "cl",
+        "aliases": [
+          "CL",
+          "CL/AM",
+          "CL/HPM"
+        ],
+        "extensions": [
+          ".cl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "cl",
+        "scopeName": "source.cl",
+        "path": "./syntaxes/cl.tmLanguage.json"
+      }
+    ]
+  },
   "contributes": {
     "languages": [
       {
