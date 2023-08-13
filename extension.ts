@@ -1,9 +1,15 @@
-import vscode = require("vscode");
+import * as vscode from "vscode";
 import TextmateLanguageService from "vscode-textmate-languageservice";
+import { TokenizerService } from "vscode-textmate-languageservice/dist/types/src/services/tokenizer";
+import * as dl from "./diagnosticsLibrary";
+
 let diagnosticCollection: vscode.DiagnosticCollection;
+let diagnosticMap: Map<string, vscode.Diagnostic[]> = new Map();
+const diagnostics: vscode.Diagnostic[] = [];
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log("Activating");
+  const diagnosticFunctions: Function[] = [];
   const selector: vscode.DocumentSelector = "cl";
   const textmateService = new TextmateLanguageService(selector, context);
   const textmateTokenService = await textmateService.initTokenService();
@@ -11,75 +17,47 @@ export async function activate(context: vscode.ExtensionContext) {
   diagnosticCollection = vscode.languages.createDiagnosticCollection("cl");
   context.subscriptions.push(diagnosticCollection);
 
+  Object.values(dl).forEach((fn) => diagnosticFunctions.push(fn));
+
   vscode.workspace.textDocuments.forEach(async (textDocument) => {
     if (textDocument.languageId === "cl") {
-      const tokens = await textmateTokenService.fetch(textDocument);
-      checkVariableDeclarations(tokens, textDocument);
+      await updateDiagnostics(textmateTokenService, textDocument, diagnosticFunctions);
     }
   });
 
   vscode.workspace.onDidChangeTextDocument(async (event) => {
     const textDocument = event.document;
     if (textDocument.languageId === "cl") {
-      const tokens = await textmateTokenService.fetch(textDocument);
-      checkVariableDeclarations(tokens, textDocument);
+      await updateDiagnostics(textmateTokenService, textDocument, diagnosticFunctions);
     }
   });
 
   vscode.workspace.onDidOpenTextDocument(async (textDocument) => {
     if (textDocument.languageId === "cl") {
-      const tokens = await textmateTokenService.fetch(textDocument);
-      checkVariableDeclarations(tokens, textDocument);
+      await updateDiagnostics(textmateTokenService, textDocument, diagnosticFunctions);
     }
   });
 
   vscode.workspace.onDidCloseTextDocument(async (textDocument) => {
     if (textDocument.languageId === "cl") {
       diagnosticCollection.set(textDocument.uri, undefined);
+      diagnosticMap.delete(textDocument.uri.fsPath);
     }
   });
 }
 
-function checkVariableDeclarations(tokens, textDocument: vscode.TextDocument) {
-  const declaredVariables: string[] = [];
-  const diagnostics: vscode.Diagnostic[] = [];
+async function updateDiagnostics(
+  textmateTokenService: TokenizerService,
+  textDocument: vscode.TextDocument,
+  diagnosticFunctions: Function[]
+): Promise<void> {
+  const tokens = await textmateTokenService.fetch(textDocument);
+  const fileURI = textDocument.uri;
+  diagnostics.length = 0;
+
+  await Promise.all(diagnosticFunctions.map((fn) => fn(tokens, diagnostics)));
+
   diagnosticCollection.set(textDocument.uri, undefined);
-
-  for (const token of tokens) {
-    const scopes = token.scopes;
-    let diagnosticMap: Map<string, vscode.Diagnostic[]> = new Map();
-    // Check if the token represents a variable declaration
-    if (
-      scopes.includes("variable.other.cl") ||
-      scopes.includes("variable.declaration.cl")
-    ) {
-      const variableName = token.text;
-
-      // Check if the variable has already been declared
-      if (
-        scopes.includes("variable.declaration.cl") &&
-        !declaredVariables.includes(variableName)
-      ) {
-        declaredVariables.push(variableName);
-        console.log(`Variable '${variableName}' is being declared.`);
-      } else if (!declaredVariables.includes(variableName)) {
-        // Raise a lint error
-        console.error(`Variable '${variableName}' has not been declared.`);
-        const range = new vscode.Range(
-          new vscode.Position(token.line, token.startIndex),
-          new vscode.Position(token.line, token.endIndex)
-        );
-        const diagnostic = new vscode.Diagnostic(
-          range,
-          `Undeclared variable or constant '${variableName}'.`,
-          vscode.DiagnosticSeverity.Error
-        );
-        const fileURI = textDocument.uri;
-        console.log(fileURI);
-        diagnostics.push(diagnostic);
-        diagnosticMap.set(fileURI.fsPath, diagnostics);
-        diagnosticCollection.set(fileURI, diagnostics);
-      }
-    }
-  }
+  diagnosticMap.set(fileURI.fsPath, diagnostics);
+  diagnosticCollection.set(fileURI, diagnostics);
 }
